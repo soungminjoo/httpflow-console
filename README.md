@@ -43,3 +43,9 @@ Httpflow 0.0.1
 ```
 bash-3.2$ httpflow.sh searchCurl.hfd
 ```
+* 참고) 환경변수 추가 방법
+```
+환경변수 추가 방법은 OS별로 차이가 있는데,
+apache maven 설치 가이드 페이지에 windows와 unix계열의 설정방법이 나와 있으니 필요시 참고 하시면 되겠습니다.
+http://maven.apache.org/install.html
+```
