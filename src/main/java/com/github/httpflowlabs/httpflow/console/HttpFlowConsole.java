@@ -5,17 +5,12 @@ import com.github.httpflowlabs.httpflow.console.command.navigator.NavigatorComma
 import com.github.httpflowlabs.httpflow.console.command.run.HttpFlowBuilder;
 import com.github.httpflowlabs.httpflow.console.exception.SilentStopSignalException;
 import com.github.httpflowlabs.httpflow.console.io.ConsolePrinter;
-import com.github.httpflowlabs.httpflow.console.io.SelectionDialog;
 import com.github.httpflowlabs.httpflow.console.session.ConsoleSession;
 
 public class HttpFlowConsole {
 
     private void start() {
         ConsoleSession.INSTANCE.setHttpFlow(new HttpFlowBuilder().build());
-
-        SelectionDialog storageDialog = new SelectionDialog("Storage Mode", "P : Physical disk", "L : Logical storage");
-        String cmd = storageDialog.open("httpflow> Choose storage mode : ");
-        ConsoleSession.INSTANCE.setPhysicalDiskMode("P".equalsIgnoreCase(cmd));
         ConsolePrinter.INSTANCE.bottomLine();
 
         AbstractConsoleCommand command = new NavigatorCommand();
@@ -29,7 +24,11 @@ public class HttpFlowConsole {
 
     public static void main(String[] args) {
         if (args.length > 0) {
-            new HttpFlowSingleFileExecutor().start(args);
+            if (isLastArgsVersionOptioin(args)) {
+                showHttpFlowVersioin();
+            } else {
+                new HttpFlowSingleFileExecutor().start(args);
+            }
 
         } else {
             try {
@@ -38,6 +37,15 @@ public class HttpFlowConsole {
                 handleException(e);
             }
         }
+    }
+
+    private static boolean isLastArgsVersionOptioin(String[] args) {
+        String lastArgs = args[args.length - 1];
+        return "-v".equals(lastArgs) || "--version".equals(lastArgs);
+    }
+
+    private static void showHttpFlowVersioin() {
+        ConsolePrinter.INSTANCE.println("Httpflow 0.0.1");
     }
 
     private static void handleException(Exception e) {
